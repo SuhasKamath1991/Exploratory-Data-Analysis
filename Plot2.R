@@ -1,0 +1,10 @@
+data <- "./household_power_consumption.txt"
+fulldata <- read.csv(data, header=T, sep=';', na.strings="?", stringsAsFactors=F)
+datetime <- strptime(paste(fulldata$Date, fulldata$Time, sep=" "), "%d/%m/%Y %H:%M:%S")
+fulldata <- cbind(fulldata, datetime)
+fulldata$Date <- as.Date(fulldata$Date, format = "%d/%m/%Y")
+fulldata$Time <- format(fulldata$Time, format = "%H:%M:%S")
+reqdata <- subset(fulldata, Date == "2007-02-01"|Date == "2007-02-02")
+png("plot2.png", height = 480, width = 480)
+plot(reqdata$datetime, reqdata$Global_active_power, type = "l", ylab = "Global Active Power (kilowatts)", xlab = " ")
+dev.off()
